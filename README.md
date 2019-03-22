@@ -43,8 +43,8 @@
 
 ## 开发工具与技术：
 
-工具：Eclipse SQLyog svn
-技术：SpringMvc+spring+mybatis Mysql Redis jdk1.8
+- 工具：Eclipse SQLyog svn
+- 技术：SpringMvc+spring+mybatis Mysql Redis jdk1.8
 
 ## 说明：
 
