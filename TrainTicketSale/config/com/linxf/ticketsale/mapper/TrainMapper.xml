@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linxf.ticketsale.mapper.TrainMapper">
+
+	<select id="getTidListByType" parameterType="string" resultType="string">
+		SELECT tid FROM t_train WHERE ttype=#{ttype}
+	</select>
+
+	<select id="getTidList" resultType="string">
+		SELECT tid FROM t_train
+	</select>
+
+	<select id="getTrainInfoById" parameterType="string" resultType="train">
+		SELECT * FROM t_train WHERE tid=#{tid}
+	</select>
+
+	<insert id="addnewtrain" parameterType="train">
+		INSERT INTO t_train
+		VALUES(#{tid},#{ttype},#{stype1},#{scount1},#{tmoney1},
+		#{stype2},#{scount2},#{tmoney2},#{stype3},#{scount3},#{tmoney3},#{runtime},#{stacount},0)
+	</insert>
+
+	<update id="updateTrainSeatType1" parameterType="train">
+		UPDATE t_train
+		SET stype1=#{stype1},tmoney1=#{tmoney1} WHERE tid=#{tid}
+	</update>
+	
+	<update id="updateTrainSeatType2" parameterType="train">
+		UPDATE t_train
+		SET stype2=#{stype2},tmoney2=#{tmoney2} WHERE tid=#{tid}
+	</update>
+	
+	<update id="updateTrainSeatType3" parameterType="train">
+		UPDATE t_train
+		SET stype3=#{stype3},tmoney3=#{tmoney3} WHERE tid=#{tid}
+	</update>
+
+</mapper>

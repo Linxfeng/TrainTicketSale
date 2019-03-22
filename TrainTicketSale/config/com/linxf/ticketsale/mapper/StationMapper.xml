@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linxf.ticketsale.mapper.StationMapper">
+
+	<select id="getStationInfoByTid" parameterType="string"
+		resultType="station">
+		SELECT * FROM t_station WHERE tid=#{tid}
+	</select>
+
+	<select id="getStartTidList" parameterType="string" resultType="string">
+		SELECT tid FROM t_station WHERE sname1=#{sname1}
+	</select>
+
+	<select id="getEndTidList" parameterType="string" resultType="string">
+		SELECT tid FROM t_station WHERE sname2=#{sname2}
+	</select>
+
+	<insert id="addnewtrain" parameterType="station">
+		INSERT INTO t_station VALUES (#{tid},#{sname1},#{stime1},#{sname2},#{stime2},#{ticket},#{tmoney})
+	</insert>
+
+	<update id="updateStationByTrain" parameterType="station">
+		UPDATE t_station SET ticket=#{ticket},tmoney=#{tmoney} WHERE tid=#{tid} AND sname1=#{sname1}
+	</update>
+
+	<update id="changeStationList" parameterType="station">
+		UPDATE t_station SET sname1=#{sname1},stime1=#{stime1},sname2=#{sname2},
+		stime2=#{stime2} WHERE tid=#{tid} AND sname1=#{temp}
+	</update>
+
+</mapper>

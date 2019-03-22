@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linxf.ticketsale.mapper.UserMapper">
+
+	<!--添加一个用户 -->
+	<insert id="addUser" parameterType="user">
+		<selectKey keyProperty="uid" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into t_user
+		values(null,#{userName},#{password},0,#{phone},#{address})
+	</insert>
+	
+	<!-- 用户/管理员登录验证 -->
+	<select id="loginCheck" parameterType="user" resultType="user">
+		SELECT * FROM t_user WHERE username=#{userName} AND password=#{password} AND utype=#{utype}
+	</select>
+	
+	<!-- 用户名唯一性验证 -->
+	<select id="nameCheck" parameterType="String" resultType="user">
+		SELECT * FROM t_user WHERE username=#{userName} AND utype=0
+	</select>
+
+	<select id="findByName" parameterType="user" resultType="user">
+		select
+		username,phone,address from t_user where username = #{userName}
+	</select>
+
+	<!--修改用户信息  -->
+	<update id="updateUser" parameterType="user">
+		update t_user set
+		phone=#{phone}, address=#{address} where uid =#{uid}
+	</update>
+
+	<select id="findPassenger" parameterType="java.lang.Integer" resultType="passenger">
+		select t1.pid,truename trueName,idcard,role from t_passenger t1,
+		user_passenger t2 where
+		t2.uid=#{uid} and t1.pid=t2.pid and del = 0
+	</select>
+
+	<insert id="addpassenger" parameterType="passenger" useGeneratedKeys="true" keyProperty="pid">  
+		insert into t_passenger values(null,#{trueName},#{idCard},#{role},0)
+	</insert>
+
+	<select id="findPassengerId" parameterType="String" resultType="passenger">
+		select pid,truename trueName,idcard,role from t_passenger where idCard = #{idCard} and del = 0
+	</select>
+	
+	<select id="findByid" parameterType="java.lang.Integer" resultType="passenger">
+		select * from t_passenger where pid = #{pid} and del = 0
+	</select>
+	
+	<insert id="userTopassenger" parameterType="user">
+		insert into user_passenger values(#{uid},#{passengerList[0].pid})
+	</insert>
+	
+	<!--  根据用户id查用户信息 -->
+	<select id="findUserById" parameterType="java.lang.Integer" resultType="user">
+		select username,password,phone,address from t_user where uid = #{uid}
+	</select>
+	
+	<!-- 修改密码 -->
+	<update id="updatePass" parameterType="user">
+		update t_user set password=#{password} where uid=#{uid}
+	</update>
+	
+	<delete id="deletepassenger" parameterType="user">
+		DELETE FROM user_passenger WHERE uid=#{uid} AND pid=#{passengerList[0].pid}
+	</delete>
+	
+	<!-- 修改乘客类型 -->
+	<update id="updateType" parameterType="passenger">
+		update t_passenger set role=#{role} where pid=#{pid}
+	</update>
+	
+</mapper>

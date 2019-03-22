@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linxf.ticketsale.mapper.OrderMapper">
+	
+	<insert id="addOrder" useGeneratedKeys="true" keyProperty="oid" parameterType="order">  
+		INSERT INTO t_order VALUES (NULL,#{uid},#{pid},#{tid},#{s_start},#{startTime},
+		#{s_end},#{endTime},#{createTime},#{stype},#{money},#{otype},0)
+	</insert>
+	
+	<select id="findAllOrderByUid" parameterType="int" resultType="order">
+		SELECT * FROM t_order WHERE uid =#{uid} AND del=0
+	</select>
+	
+	<select id="findOrderByOtype" parameterType="int" resultType="order">
+		SELECT * FROM t_order WHERE otype = #{otype} AND del=0
+	</select>
+	
+	<select id="findOrderByOid" parameterType="int" resultType="order">
+		SELECT * FROM t_order WHERE oid = #{oid} AND del=0
+	</select>
+	
+	<update id="deleteOrderByOid" parameterType="int">
+		UPDATE t_order SET del = 1 WHERE oid = #{oid} 
+	</update>
+	
+	<update id="OtypeToPay" parameterType="int">
+		UPDATE t_order SET otype = 1 WHERE oid = #{oid} AND del=0
+	</update>
+	
+	<update id="OtypeToPost" parameterType="int">
+		UPDATE t_order SET otype = 2 WHERE oid = #{oid} AND del=0
+	</update>
+	
+</mapper>

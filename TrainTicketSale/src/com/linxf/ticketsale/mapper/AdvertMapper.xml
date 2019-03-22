@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linxf.ticketsale.mapper.AdvertMapper">
+
+	<resultMap type="advert" id="advertMap">
+		<result column="content" property="context" />
+		<result column="aid" property="aid" />
+		<result column="title" property="title" />
+		<result column="sendtime" property="sendtime" />
+		<result column="del" property="del" />
+	</resultMap>
+
+	<insert id="addnewadvert" parameterType="advert">
+		INSERT INTO t_advert
+		VALUES (NULL,#{title},#{context},#{sendtime},0)
+	</insert>
+
+	<select id="findAllAdvert" resultType="advert">
+		SELECT aid,title,content,sendtime FROM t_advert WHERE del = 0
+	</select>
+
+	<select id="findAdvertInfoById" parameterType="java.lang.Integer" resultMap="advertMap">
+		SELECT aid,title,content,sendtime FROM t_advert WHERE aid =
+		#{aid} AND del = 0
+	</select>
+	
+	<update id="deleteadvert" parameterType="java.lang.Integer">
+		update t_advert set del=1 where aid =#{aid}
+	</update>
+
+</mapper>
